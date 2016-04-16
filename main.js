@@ -101,8 +101,34 @@
     this.collection = [];
   };
 
+  DOMNodeCollection.prototype.on = function(event, cb) {
+    this.each(function(el) {
+      el.addEventListener(event, cb);
+    });
+  };
+
+  DOMNodeCollection.prototype.off = function(event, cb) {
+    this.each(function(el) {
+      el.removeEventListener(event, cb);
+    });
+  };
+
   window.$l = function(input) {
-    if(input instanceof HTMLElement) {
+    var cbs = [];
+    var cbExecution = function() {
+      cbs.forEach(function(cb) {
+        cb();
+      });
+    };
+    if(input instanceof Function) {
+      if(!this.domLoaded) {
+        cbs.push(input);
+        document.addEventListener("DOMContentLoaded", cbExecution);
+        this.domLoaded = true;
+      } else {
+        input();
+      }
+    } else if(input instanceof HTMLElement) {
       return new DOMNodeCollection([input]);
     } else {
       var htmlCollec = document.getElementsByTagName(input);
