@@ -2,6 +2,7 @@
 
   var DOMNodeCollection = function(array) {
     this.collection = array;
+    this.first = this.collection[0];
   };
 
   DOMNodeCollection.prototype.each = function(cb) {
@@ -16,7 +17,7 @@
         item.innerHTML = html;
       });
     } else {
-      return this.collection[0].innerHTML;
+      return this.first.innerHTML;
     }
   };
 
@@ -28,14 +29,76 @@
   DOMNodeCollection.prototype.append = function(arg) {
     if (arg instanceof DOMNodeCollection) {
       arg.each(function(child) {
-        this.collection[0].appendChild(child);
+        this.first.appendChild(child);
       }.bind(this));
-      // this.collection[0].appendChild(arg.collection[0]);
     } else if (arg instanceof HTMLElement) {
-
+      this.first.appendChild(arg);
     } else if (typeof arg === "string") {
-
+      this.first.innerHTML += arg;
     }
+  };
+
+  DOMNodeCollection.prototype.attr = function(attrib, val) {
+    if (arguments.length === 1) {
+      return this.first.getAttribute(attrib);
+    } else {
+      this.each(function(el) {
+        el.setAttribute(attrib, val);
+      });
+    }
+  };
+
+  DOMNodeCollection.prototype.addClass = function(newClass) {
+    this.each(function(el){
+      el.classList.add(newClass);
+    });
+  };
+
+  DOMNodeCollection.prototype.removeClass = function(classToRemove) {
+    this.each(function(el) {
+      if(classToRemove) {
+        el.classList.remove(classToRemove);
+      } else {
+        el.className = "";
+      }
+    });
+  };
+
+  DOMNodeCollection.prototype.children = function() {
+    var allChildren = [];
+    this.each(function(el) {
+      if (el.children.length === 1) {
+        allChildren.push(el.children[0]);
+      }
+    });
+    return new DOMNodeCollection(allChildren);
+  };
+
+  DOMNodeCollection.prototype.parent = function() {
+    var allParents = [];
+    this.each(function(el) {
+      if (el.parentNode) {
+        allParents.push(el.parentNode);
+      }
+    });
+    return new DOMNodeCollection(allParents);
+  };
+
+  DOMNodeCollection.prototype.find = function(selector) {
+    var found = [];
+    this.each(function(el) {
+      var foundNodes = el.querySelectorAll(selector);
+      var foundArray = Array.prototype.slice.call(foundNodes);
+      found = found.concat(foundArray);
+    });
+    return new DOMNodeCollection(found);
+  };
+
+  DOMNodeCollection.prototype.remove = function() {
+    this.each(function(el) {
+      el.outerHTML = "";
+    });
+    this.collection = [];
   };
 
   window.$l = function(input) {
