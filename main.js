@@ -174,16 +174,19 @@
 
     var req = merge(defaults, options);
 
+    if (req.method.toUpperCase() === "GET" && serialize(req.data) !== ""){
+       req.url += "?" + serialize(req.data);
+    }
 
 
     var xhr = new XMLHttpRequest();
-    xhr.open(req.method, req.url);
+    xhr.open(req.method, req.url, true);
 
-    xhr.onreadystatechange = function() {
-      if(xhr.readyState === 4 && xhr.status === 200) {
+    xhr.onload = function(e) {
+      if(xhr.status === 200) {
         req.success(JSON.parse(xhr.response));
-      } else if (xhr.readyState === 4 && xhr.status !== 200) {
-        req.error();
+      } else  {
+        req.error(xhr.response);
       }
 
     };
