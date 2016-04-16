@@ -137,5 +137,58 @@
     }
   };
 
+  var serialize = function(obj) {
+    var str = [];
+    for(var p in obj)
+      if (obj.hasOwnProperty(p)) {
+        str.push(encodeURIComponent(p) + "=" + encodeURIComponent(obj[p]));
+      }
+    return str.join("&");
+  };
+
+  var merge = function() {
+    var obj;
+    var otherObj;
+    var idx = arguments.length - 1;
+    for(idx; idx > 0; idx--) {
+      obj = arguments[idx];
+      otherObj = arguments[idx - 1];
+      for(var key in obj) {
+        otherObj[key] = obj[key];
+      }
+    }
+    return otherObj;
+  };
+
+  window.$l.ajax = function(options) {
+    var defaults = {
+      url: "http://api.icndb.com/jokes/random?firstName=Chuck&amp;lastName=Norris",
+      method: "GET",
+      data: {},
+      contentType: "application/x-www-form-urlencoded; charset=UTF-8",
+      success: function(data) {
+        console.log(data.value.joke);
+      },
+      error: function() {}
+    };
+
+    var req = merge(defaults, options);
+
+
+
+    var xhr = new XMLHttpRequest();
+    xhr.open(req.method, req.url);
+
+    xhr.onreadystatechange = function() {
+      if(xhr.readyState === 4 && xhr.status === 200) {
+        req.success(JSON.parse(xhr.response));
+      } else if (xhr.readyState === 4 && xhr.status !== 200) {
+        req.error();
+      }
+
+    };
+    xhr.send(serialize(req.data));
+  };
+
   console.log("I loaded");
 })();
