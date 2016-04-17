@@ -131,7 +131,7 @@
     } else if(input instanceof HTMLElement) {
       return new DOMNodeCollection([input]);
     } else {
-      var htmlCollec = document.getElementsByTagName(input);
+      var htmlCollec = document.querySelectorAll(input);
       var htmlArray = Array.prototype.slice.call(htmlCollec);
       return new DOMNodeCollection(htmlArray);
     }
