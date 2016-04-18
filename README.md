@@ -9,7 +9,6 @@ freeDOM can be used for a multitude of JavaScript projects.  One example of its 
 1.  Clone this repository.
 2.  Add the freeDOM.js file into the directory of your project.
 3.  Add a script tag in your HTML document referencing the freeDOM.js file.
-![View] (/images/html_doc.png)
 4.  You're all set up!  freeDOM away!
 
 ## Features
