@@ -2,7 +2,7 @@
 
 freeDOM is a small JavaScript library and lightweight version of jQuery.  Its goal is to assist with DOM interaction by simplifying HTML document manipulation, event handling, and ajax requests.
 
-freeDOM can be used for a multitude of JavaScript projects.  One example of its use can be found here on this [game of Blackjack made with freeDOM](http://ljr5102.github.io/Blackjack)
+freeDOM can be used for a multitude of JavaScript projects.  One example of its use can be found here on this [game of Blackjack made with freeDOM.](http://ljr5102.github.io/Blackjack)
 
 ## Getting Started
 
