@@ -67,9 +67,8 @@
   DOMNodeCollection.prototype.children = function() {
     var allChildren = [];
     this.each(function(el) {
-      if (el.children.length === 1) {
-        allChildren.push(el.children[0]);
-      }
+      var childList = el.children;
+      allChildren = allChildren.concat([].slice.call(childList));
     });
     return new DOMNodeCollection(allChildren);
   };
