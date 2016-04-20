@@ -48,6 +48,10 @@
     }
   };
 
+  DOMNodeCollection.prototype.val = function() {
+    return this.first.value;
+  };
+
   DOMNodeCollection.prototype.addClass = function(newClass) {
     this.each(function(el){
       el.classList.add(newClass);
@@ -192,5 +196,5 @@
     xhr.send(serialize(req.data));
   };
 
-  console.log("I loaded");
+  console.log("freeDOM Library loaded...");
 })();
